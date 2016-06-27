@@ -564,7 +564,10 @@ def curate(request):
                 content = {'message':e.message}
                 return Response(content, status=status.HTTP_400_BAD_REQUEST)
             jsondata = XMLdata(schemaID = request.DATA['schema'], xml = xmlStr, title = request.DATA['title'])
-            docID = jsondata.save()            
+            docID = jsondata.save()
+            
+            # Save dataset ID in the output
+            serializer.data['_id'] = str(docID)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         except:
             if docID is not None:
